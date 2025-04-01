@@ -1,0 +1,33 @@
+service: serverless-docker-lambda
+
+provider:
+  name: aws
+  region: us-east-1
+
+functions:
+  hello:
+    image:
+      name: my-lambda-image
+
+resources:
+  Resources:
+    MyLambdaExecutionRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: LambdaDockerExecutionRole
+        AssumeRolePolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: LambdaBasicExecution
+            PolicyDocument:
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource: "*"
