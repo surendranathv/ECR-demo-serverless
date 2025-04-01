@@ -1,8 +1,11 @@
-# Use AWS Lambda base image for Python
-FROM public.ecr.aws/lambda/python:3.9
+# Use the AWS Lambda base image for Node.js 18
+FROM public.ecr.aws/lambda/nodejs:18
 
-# Copy function code
-COPY app.py .  
+# Copy application files
+COPY handler.js package.json ./
 
-# Set the handler (matches function name in app.py)
-CMD ["app.lambda_handler"]
+# Install dependencies (if any)
+RUN npm install
+
+# Set the Lambda function handler
+CMD ["handler.hello"]
